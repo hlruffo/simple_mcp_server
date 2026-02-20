@@ -29,8 +29,13 @@ jobs:
       - name: Instalar dependências
         run: uv sync --all-extras --dev
 
-      - name: Lint com Ruff
-        run : uv run ruff check .
+      - name: Lint com Ruff (auto-fix)
+        run: uv run ruff check . --fix
+
+      - name: Commit correções do ruff
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: auto-fix ruff"
 
       - name: Rodar testes
         run: uv run pytest
