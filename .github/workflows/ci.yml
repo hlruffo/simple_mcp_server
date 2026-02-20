@@ -12,6 +12,8 @@ jobs:
   ci:
     name: Lint e Tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout do código
