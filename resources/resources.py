@@ -22,3 +22,24 @@ def get_all_tasks() -> str:
         result += f"Created: {task['created_at']}\n\n"
     
     return result
+
+
+
+@mcp.resource("task://pending")
+def get_pending_tasks() -> str:
+    """
+        Returns only pending tasks
+    """
+    pending = [t for t in tasks if t["status"]=="pending"]
+    
+    if not pending:
+        return "No pending tasks! All done! Congrats!"
+    
+    result = "Pending Tasks: \n\n"
+    for task in pending:
+        result += f"⏳ [{task['id']}] {task['title']}\n"
+        if task["description"]:
+            result += f"   {task['description']}\n"
+        result += "\n"
+    
+    return result
