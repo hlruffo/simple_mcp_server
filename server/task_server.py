@@ -1,6 +1,11 @@
+import asyncio
 from fastmcp import FastMCP
+from db import init_db
+
 
 mcp = FastMCP("TaskTracker")
+
+asyncio.run(init_db())
 
 from resources.resources import get_all_tasks, get_pending_tasks  # noqa: E402
 from tools.tools import add_tool, complete_task, delete_task  # noqa: E402
