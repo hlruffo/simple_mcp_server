@@ -1,17 +1,11 @@
 from datetime import datetime
 
-import sys
-
-mcp = sys.modules["__main__"].mcp
-
 # simple in-memory task storage
 tasks = []
 task_id_counter = 1
 
 
-# implementing tools
-@mcp.tool()
-def add_task(title: str, description: str = "") -> dict:
+def add_tool(title: str, description: str = "") -> dict:
     """
     Adds a new task to the task list
     """
@@ -30,7 +24,6 @@ def add_task(title: str, description: str = "") -> dict:
     return task
 
 
-@mcp.tool()
 def complete_task(task_id: int) -> dict:
     """
     Marks a task as completed
@@ -43,7 +36,6 @@ def complete_task(task_id: int) -> dict:
     return {"error": f"Task {task_id} not found"}
 
 
-@mcp.tool()
 def delete_task(task_id: int) -> dict:
     """
     Deletes a task

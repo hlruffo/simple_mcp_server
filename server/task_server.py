@@ -2,8 +2,17 @@ from fastmcp import FastMCP
 
 mcp = FastMCP("TaskTracker")
 
-import resources.resources  # noqa: E402, F401
-import tools.tools  # noqa: E402, F401
+from resources.resources import get_all_tasks, get_pending_tasks  # noqa: E402
+from tools.tools import add_tool, complete_task, delete_task  # noqa: E402
+
+# Register tools
+mcp.tool(name="add_task")(add_tool)
+mcp.tool()(complete_task)
+mcp.tool()(delete_task)
+
+# Register resources
+mcp.resource("tasks://all")(get_all_tasks)
+mcp.resource("task://pending")(get_pending_tasks)
 
 
 @mcp.prompt()
