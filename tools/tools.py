@@ -33,16 +33,12 @@ def complete_task(task_id: int) -> dict:
     """
     Marks a task as completed
     """
-    try:
-        for task in tasks:
-            if task["id"] == task_id:
-                task["status"] == "completed"
-                task["completed_at"] == datetime.now().isoformat()
-                return task
-    except ValueError as nfe:
-        raise nfe(f"Task with id {task_id} was not found.")
-    except Exception as e:
-        raise e("Failed to complete task.")
+    for task in tasks:
+        if task["id"] == task_id:
+            task["status"] = "completed"
+            task["completed_at"] = datetime.now().isoformat()
+            return task
+    return {"error": f"Task {task_id} not found"}
 
 
 @mcp.tool()
@@ -50,13 +46,11 @@ def delete_task(task_id: int) -> dict:
     """
     Deletes a task
     """
-    try:
-        for i, task in enumerate(tasks):
-            if task["id"] == task_id:
-                deleted_task = tasks.pop(i)
-                return {
-                    "success": True,
-                    "deleted": deleted_task,
-                }
-    except Exception as e:
-        raise e("Failed to delete task")
+    for i, task in enumerate(tasks):
+        if task["id"] == task_id:
+            deleted_task = tasks.pop(i)
+            return {
+                "success": True,
+                "deleted": deleted_task,
+            }
+    return {"success": False, "error": f"Task {task_id} not found"}
