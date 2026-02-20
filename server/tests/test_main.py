@@ -1,15 +1,18 @@
+import asyncio
+
+import db
 import pytest
-import tools.tools as tools_module
 from resources.resources import get_all_tasks, get_pending_tasks
 from tools.tools import add_tool, complete_task, delete_task
 
 
 @pytest.fixture(autouse=True)
 def reset_state():
-    """Reseta o estado global antes de cada teste."""
-    tools_module.tasks.clear()
-    tools_module.task_id_counter = 1
+    """Initialises the DB and clears all tasks before each test."""
+    asyncio.run(db.init_db())
+    asyncio.run(db.clear_tasks())
     yield
+    asyncio.run(db.clear_tasks())
 
 
 # ---------------------------------------------------------------------------
@@ -43,7 +46,8 @@ class TestAddTool:
         add_tool("Tarefa A")
         add_tool("Tarefa B")
 
-        assert len(tools_module.tasks) == 2
+        tasks = asyncio.run(db.fetch_all_tasks())
+        assert len(tasks) == 2
 
     def test_titulo_vazio(self):
         task = add_tool("")
@@ -91,8 +95,9 @@ class TestCompleteTask:
 
         complete_task(task1["id"])
 
-        assert tools_module.tasks[1]["id"] == task2["id"]
-        assert tools_module.tasks[1]["status"] == "pending"
+        tasks = asyncio.run(db.fetch_all_tasks())
+        task2_db = next(t for t in tasks if t["id"] == task2["id"])
+        assert task2_db["status"] == "pending"
 
 
 # ---------------------------------------------------------------------------
@@ -106,7 +111,8 @@ class TestDeleteTask:
 
         delete_task(task["id"])
 
-        assert len(tools_module.tasks) == 0
+        tasks = asyncio.run(db.fetch_all_tasks())
+        assert len(tasks) == 0
 
     def test_retorna_success_true(self):
         task = add_tool("Tarefa para apagar")
@@ -135,8 +141,9 @@ class TestDeleteTask:
 
         delete_task(task1["id"])
 
-        assert len(tools_module.tasks) == 1
-        assert tools_module.tasks[0]["id"] == task2["id"]
+        tasks = asyncio.run(db.fetch_all_tasks())
+        assert len(tasks) == 1
+        assert tasks[0]["id"] == task2["id"]
 
 
 # ---------------------------------------------------------------------------
@@ -154,7 +161,9 @@ class TestFluxoCompleto:
 
         result = delete_task(task["id"])
         assert result["success"] is True
-        assert len(tools_module.tasks) == 0
+
+        tasks = asyncio.run(db.fetch_all_tasks())
+        assert len(tasks) == 0
 
     def test_ids_sequenciais_apos_delecao(self):
         t1 = add_tool("T1")
@@ -272,7 +281,7 @@ class TestGetPendingTasks:
 
         result = get_pending_tasks()
 
-        assert result.count("\n\n") >= 1  # bloco por task, sem linha extra de descrição
+        assert result.count("\n\n") >= 1
         lines = [line for line in result.splitlines() if line.strip()]
         assert not any("Description" in line for line in lines)
 

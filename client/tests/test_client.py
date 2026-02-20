@@ -1,5 +1,7 @@
+import asyncio
+
+import db
 import pytest
-import tools.tools as tools_module
 from fastmcp import Client, FastMCP
 from resources.resources import get_all_tasks, get_pending_tasks
 from tools.tools import add_tool, complete_task, delete_task
@@ -19,12 +21,11 @@ def mcp_server():
 
 @pytest.fixture(autouse=True)
 def reset_state():
-    """Reset in-memory state before each test."""
-    tools_module.tasks.clear()
-    tools_module.task_id_counter = 1
+    """Initialises the DB and clears all tasks before each test."""
+    asyncio.run(db.init_db())
+    asyncio.run(db.clear_tasks())
     yield
-    tools_module.tasks.clear()
-    tools_module.task_id_counter = 1
+    asyncio.run(db.clear_tasks())
 
 
 # ---------------------------------------------------------------------------
