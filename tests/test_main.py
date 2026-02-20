@@ -252,7 +252,7 @@ class TestGetPendingTasks:
         assert "No pending tasks" in result
 
     def test_exibe_apenas_pendentes(self):
-        pending = add_tool("Pendente")
+        add_tool("Pendente")
         done = add_tool("Concluída")
         complete_task(done["id"])
 
@@ -274,8 +274,8 @@ class TestGetPendingTasks:
         result = get_pending_tasks()
 
         assert result.count("\n\n") >= 1  # bloco por task, sem linha extra de descrição
-        lines = [l for l in result.splitlines() if l.strip()]
-        assert not any("Description" in l for l in lines)
+        lines = [line for line in result.splitlines() if line.strip()]
+        assert not any("Description" in line for line in lines)
 
     def test_exibe_emoji_pendente(self):
         add_tool("Tarefa")
