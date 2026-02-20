@@ -197,7 +197,7 @@ class TestReadPendingTasks:
     @pytest.mark.anyio
     async def test_exibe_apenas_pendentes(self, mcp_server):
         async with Client(mcp_server) as client:
-            add = await client.call_tool("add_task", {"title": "Pendente"})
+            await client.call_tool("add_task", {"title": "Pendente"})
             done = await client.call_tool("add_task", {"title": "Concluida"})
             await client.call_tool("complete_task", {"task_id": done.data["id"]})
 
