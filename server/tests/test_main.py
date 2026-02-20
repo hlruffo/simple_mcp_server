@@ -1,5 +1,4 @@
 import pytest
-
 import tools.tools as tools_module
 from resources.resources import get_all_tasks, get_pending_tasks
 from tools.tools import add_tool, complete_task, delete_task
