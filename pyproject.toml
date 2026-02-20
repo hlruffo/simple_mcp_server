@@ -10,7 +10,7 @@ dependencies = [
 
 [tool.pytest.ini_options]
 pythonpath = ["server"]
-testpaths = ["server/tests"]
+testpaths = ["server/tests", "client/tests"]
 
 [tool.ruff]
 line-length = 88

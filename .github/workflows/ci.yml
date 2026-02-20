@@ -37,5 +37,8 @@ jobs:
         with:
           commit_message: "style: auto-fix ruff"
 
-      - name: Rodar testes
-        run: uv run pytest
+      - name: Rodar testes do servidor
+        run: uv run pytest server/tests/ -v
+
+      - name: Rodar testes do cliente
+        run: uv run pytest client/tests/ -v
