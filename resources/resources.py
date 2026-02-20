@@ -1,5 +1,4 @@
 from task_server import mcp
-from tools import tasks
 
 
 @mcp.resource("tasks://all")
@@ -7,6 +6,8 @@ def get_all_tasks() -> str:
     """
     Gets all tasks as formatted text
     """
+    from tools.tools import tasks
+
     if not tasks:
         return "No task found"
 
@@ -27,6 +28,8 @@ def get_pending_tasks() -> str:
     """
     Returns only pending tasks
     """
+    from tools.tools import tasks
+
     pending = [t for t in tasks if t["status"] == "pending"]
 
     if not pending:
