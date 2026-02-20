@@ -45,7 +45,7 @@ async def update_task_status(
             (status, completed_at, task_id),
         )
         await db.commit()
-        async with db.execute("SELECT * FROM tasks WHERE id = ?", (task_id)) as cur:
+        async with db.execute("SELECT * FROM tasks WHERE id = ?", (task_id,)) as cur:
             row = await cur.fetchone()
             return dict(zip([c[0] for c in cur.description], row)) if row else None
 
