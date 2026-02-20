@@ -1,4 +1,6 @@
-from task_server import mcp
+import sys
+
+mcp = sys.modules["__main__"].mcp
 
 
 @mcp.resource("tasks://all")

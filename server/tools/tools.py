@@ -1,6 +1,8 @@
 from datetime import datetime
 
-from task_server import mcp
+import sys
+
+mcp = sys.modules["__main__"].mcp
 
 # simple in-memory task storage
 tasks = []
@@ -9,7 +11,7 @@ task_id_counter = 1
 
 # implementing tools
 @mcp.tool()
-def add_tool(title: str, description: str = "") -> dict:
+def add_task(title: str, description: str = "") -> dict:
     """
     Adds a new task to the task list
     """
