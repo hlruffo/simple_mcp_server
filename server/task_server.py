@@ -1,7 +1,7 @@
 import asyncio
-from fastmcp import FastMCP
-from db import init_db
 
+from db import init_db
+from fastmcp import FastMCP
 
 mcp = FastMCP("TaskTracker")
 
