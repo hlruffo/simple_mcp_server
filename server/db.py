@@ -64,8 +64,14 @@ async def remove_task(task_id: int) -> dict | None:
 
 async def fetch_all_tasks() -> list[dict]:
     async with aiosqlite.connect(DB_PATH) as db:
-        async with db.execute("SELECT * FROM task") as cur:
+        async with db.execute("SELECT * FROM tasks") as cur:
             rows = await cur.fetchall()
             cols = [c[0] for c in cur.description]
             return [dict(zip(cols, r)) for r in rows]
-        
+
+
+async def clear_tasks() -> None:
+    async with aiosqlite.connect(DB_PATH) as db:
+        await db.execute("DELETE FROM tasks")
+        await db.execute("DELETE FROM sqlite_sequence WHERE name='tasks'")
+        await db.commit()
