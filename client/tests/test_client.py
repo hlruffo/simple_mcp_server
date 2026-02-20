@@ -1,5 +1,4 @@
 import pytest
-
 import tools.tools as tools_module
 from fastmcp import Client, FastMCP
 from resources.resources import get_all_tasks, get_pending_tasks
